@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://genlayer.example/schemas/agent-escrow/evidence-manifest.schema.json",
+  "title": "Agent Escrow Evidence Manifest",
+  "description": "One to twelve frozen evidence items. IDs must be unique, criterion_ids must exist in the deployed rubric, and aggregate canonical JSON must not exceed 32768 bytes; the contract enforces those cross-item constraints.",
+  "type": "array",
+  "minItems": 1,
+  "maxItems": 12,
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["id", "kind", "content", "content_hash", "criterion_ids", "description"],
+    "properties": {
+      "id": {"type": "integer", "minimum": 1},
+      "kind": {"enum": ["TEXT", "URL"]},
+      "content": {"type": "string"},
+      "content_hash": {
+        "type": "string",
+        "description": "Empty when not required, otherwise a canonical lowercase SHA-256 digest.",
+        "pattern": "^(|[0-9a-f]{64})$"
+      },
+      "criterion_ids": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {"type": "integer", "minimum": 1}
+      },
+      "description": {"type": "string"}
+    },
+    "allOf": [
+      {
+        "if": {"properties": {"kind": {"const": "URL"}}, "required": ["kind"]},
+        "then": {"properties": {"content": {"pattern": "^https?://"}}}
+      }
+    ]
+  }
+}

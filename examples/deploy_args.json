@@ -1,0 +1,24 @@
+{
+  "contract": "AgentEscrow",
+  "description": "Ordered constructor arguments for one native-GEN research-deliverable escrow.",
+  "args": [
+    "0x1111111111111111111111111111111111111111",
+    "Research the requested market and return a sourced report with an executive summary.",
+    "[{\"id\":1,\"requirement\":\"Return a sourced report\",\"weight_bps\":6000,\"evidence_guidance\":\"Cite public URLs\"},{\"id\":2,\"requirement\":\"Include an executive summary\",\"weight_bps\":4000,\"evidence_guidance\":\"Submit the summary as TEXT evidence\"}]",
+    "{\"allowed_kinds\":[\"TEXT\",\"URL\"],\"require_url_hashes\":true,\"requirements\":\"URLs must remain publicly retrievable and hashes must identify the reviewed bytes.\"}",
+    2000000000,
+    86400,
+    "SPLIT_50_50",
+    172800
+  ],
+  "argument_names": [
+    "provider",
+    "specification",
+    "rubric_json",
+    "evidence_policy_json",
+    "delivery_deadline",
+    "review_period",
+    "undetermined_fallback",
+    "adjudication_period"
+  ]
+}

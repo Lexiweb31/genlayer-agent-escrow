@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://genlayer.example/schemas/agent-escrow/resolution.schema.json",
+  "title": "Agent Escrow Resolution",
+  "description": "Criterion awards must sum to provider_bps and obey status/weight arithmetic. Outcome and provider_bps must agree. The contract enforces these rubric-dependent constraints.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "outcome", "provider_bps", "evidence_sufficient", "criteria", "summary"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "outcome": {"enum": ["CLIENT", "PROVIDER", "SPLIT", "UNDETERMINED"]},
+    "provider_bps": {"type": "integer", "minimum": 0, "maximum": 10000},
+    "evidence_sufficient": {"type": "boolean"},
+    "criteria": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["criterion_id", "status", "awarded_bps", "reason_codes", "evidence_ids"],
+        "properties": {
+          "criterion_id": {"type": "integer", "minimum": 1},
+          "status": {"enum": ["PASS", "PARTIAL", "FAIL", "INSUFFICIENT"]},
+          "awarded_bps": {"type": "integer", "minimum": 0, "maximum": 10000},
+          "reason_codes": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 8,
+            "items": {"type": "string", "pattern": "^[A-Z0-9_]{1,32}$"}
+          },
+          "evidence_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"type": "integer", "minimum": 1}
+          }
+        }
+      }
+    },
+    "summary": {"type": "string"},
+    "resolution_source": {"enum": ["DISPUTE_TIMEOUT"]}
+  }
+}
