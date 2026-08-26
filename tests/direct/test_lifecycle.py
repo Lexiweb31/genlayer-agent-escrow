@@ -36,6 +36,18 @@ def test_only_provider_can_submit_once(direct_vm, direct_deploy, direct_owner, d
         escrow.submit_delivery("Again", manifest())
 
 
+def test_submit_accepts_cli_decoded_evidence_manifest(
+    direct_vm, direct_deploy, direct_owner, direct_bob
+):
+    escrow = funded(direct_vm, direct_deploy, direct_owner, direct_bob)
+    direct_vm.sender = direct_bob
+
+    escrow.submit_delivery("Done", json.loads(manifest()))
+
+    assert escrow.get_state() == "SUBMITTED"
+    assert len(json.loads(escrow.get_delivery())["evidence"]) == 2
+
+
 def test_rejects_non_http_url(direct_vm, direct_deploy, direct_owner, direct_bob):
     escrow = funded(direct_vm, direct_deploy, direct_owner, direct_bob)
     bad = json.loads(manifest())

@@ -1,4 +1,5 @@
 import json
+import sys
 import pytest
 
 
@@ -91,6 +92,18 @@ def test_deployment_accepts_cli_decoded_json_arguments(direct_deploy, direct_bob
     agreement = json.loads(escrow.get_agreement())
     assert len(agreement["rubric"]) == 2
     assert agreement["evidence_policy"]["allowed_kinds"] == ["TEXT", "URL"]
+
+
+def test_deployment_accepts_cli_decoded_provider_address(direct_deploy, direct_bob):
+    escrow = direct_deploy("contracts/agent_escrow.py", *valid_terms(direct_bob))
+    args = valid_terms(direct_bob)
+    args[0] = escrow.provider
+
+    contract_class = sys.modules["_contract_agent_escrow"].AgentEscrow
+    contract_class.__init__(escrow, *args)
+
+    agreement = json.loads(escrow.get_agreement())
+    assert agreement["provider"].lower() == address_text(direct_bob)
 
 
 def test_rejects_rubric_whose_weights_do_not_total_10000(direct_deploy, direct_bob):

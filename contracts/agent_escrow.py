@@ -285,7 +285,7 @@ class AgentEscrow(gl.Contract):
         _user_assert(weight_total == BPS_TOTAL, "rubric weights must total 10000")
 
         self.client = gl.message.sender_address
-        self.provider = Address(provider)
+        self.provider = provider if isinstance(provider, Address) else Address(provider)
         self.specification = specification
         for item in parsed_rubric:
             self.rubric.append(
@@ -415,7 +415,11 @@ class AgentEscrow(gl.Contract):
         _user_assert(gl.message.sender_address == self.provider, "only provider")
         _user_assert(_now() <= self.delivery_deadline, "delivery deadline elapsed")
         _user_assert(len(delivery_summary.encode("utf-8")) <= 2_048, "delivery summary too large")
-        evidence = json.loads(evidence_manifest_json)
+        evidence = (
+            json.loads(evidence_manifest_json)
+            if isinstance(evidence_manifest_json, str)
+            else evidence_manifest_json
+        )
         _user_assert(0 < len(evidence) <= 12, "evidence must contain 1 to 12 items")
         ids = []
         total_bytes = 0
