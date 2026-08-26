@@ -221,8 +221,14 @@ class AgentEscrow(gl.Contract):
         undetermined_fallback: str,
         adjudication_period: u64,
     ) -> None:
-        parsed_rubric = json.loads(rubric_json)
-        parsed_policy = json.loads(evidence_policy_json)
+        parsed_rubric = (
+            json.loads(rubric_json) if isinstance(rubric_json, str) else rubric_json
+        )
+        parsed_policy = (
+            json.loads(evidence_policy_json)
+            if isinstance(evidence_policy_json, str)
+            else evidence_policy_json
+        )
 
         _user_assert(
             0 < len(specification.encode("utf-8")) <= MAX_SPEC_BYTES,

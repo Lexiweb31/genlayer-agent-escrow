@@ -81,6 +81,18 @@ def test_deployment_records_client_and_empty_audit_log(
     assert list(escrow.get_audit_log()) == []
 
 
+def test_deployment_accepts_cli_decoded_json_arguments(direct_deploy, direct_bob):
+    args = valid_terms(direct_bob)
+    args[2] = json.loads(args[2])
+    args[3] = json.loads(args[3])
+
+    escrow = direct_deploy("contracts/agent_escrow.py", *args)
+
+    agreement = json.loads(escrow.get_agreement())
+    assert len(agreement["rubric"]) == 2
+    assert agreement["evidence_policy"]["allowed_kinds"] == ["TEXT", "URL"]
+
+
 def test_rejects_rubric_whose_weights_do_not_total_10000(direct_deploy, direct_bob):
     """Catches underfunded or overfunded scoring rubrics."""
     args = valid_terms(direct_bob)

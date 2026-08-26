@@ -27,6 +27,8 @@ delivery_deadline, review_period, undetermined_fallback, adjudication_period
 
 See [`examples/deploy_args.json`](examples/deploy_args.json) for a complete deployment payload.
 
+The GenLayer CLI automatically decodes arguments beginning with `[` or `{`. For CLI deployment, pass the rubric and evidence policy as native JSON array/object arguments; the constructor normalizes both those values and serialized JSON strings used by SDK integrations.
+
 ## Contract interface
 
 - `fund()` — client-only payable activation.

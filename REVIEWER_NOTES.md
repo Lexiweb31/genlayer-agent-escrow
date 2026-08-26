@@ -64,7 +64,7 @@ Ten writes:
 
 The direct suite covers configuration, lifecycle, settlement, dispute consensus, prompt injection, URL integrity, URL target restrictions, timeout liveness, terminal-state immutability, authorization, and payout conservation across boundary amounts and basis points.
 
-Expected verified collection: 86 direct/artifact tests and one integration test.
+Expected verified collection: 87 direct/artifact tests and one integration test.
 
 ## Integration caveat
 
