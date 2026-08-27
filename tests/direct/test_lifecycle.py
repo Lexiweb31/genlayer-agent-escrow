@@ -48,6 +48,20 @@ def test_submit_accepts_cli_decoded_evidence_manifest(
     assert len(json.loads(escrow.get_delivery())["evidence"]) == 2
 
 
+def test_submit_normalizes_cli_zero_text_hash_to_empty_string(
+    direct_vm, direct_deploy, direct_owner, direct_bob
+):
+    escrow = funded(direct_vm, direct_deploy, direct_owner, direct_bob)
+    direct_vm.sender = direct_bob
+    evidence = json.loads(manifest())
+    evidence[0]["content_hash"] = 0
+
+    escrow.submit_delivery("Done", evidence)
+
+    delivery = json.loads(escrow.get_delivery())
+    assert delivery["evidence"][0]["content_hash"] == ""
+
+
 def test_rejects_non_http_url(direct_vm, direct_deploy, direct_owner, direct_bob):
     escrow = funded(direct_vm, direct_deploy, direct_owner, direct_bob)
     bad = json.loads(manifest())

@@ -118,6 +118,18 @@ Studio integration requires a running GenLayer Studio/localnet and is intentiona
 
 The current contract uses the SDK runner that provides `gl.evm.contract_interface` for finalized EOA payouts. A localnet image must bundle that exact runner pin (or be able to retrieve it). Older simulator images that bundle only the v0.2 SDK cannot execute this payout interface; use a current Studio/localnet image rather than downgrading the contract's settlement guarantees.
 
+## Bradbury testnet proof
+
+A complete cooperative escrow lifecycle was exercised on Bradbury using contract
+`0x91F9ce165F7ab737D3920732679C24bBa9322EDd`:
+
+- Deployment: `0x0e6836c0f96238e522f0f64ca89b123a03ab2abe5bd57b0a4acb6b970b4a9148`
+- Provider delivery: `0x797a999f8e0712cc0f71856b07b17dac1cc938b985604c5a4770883fcd1aecef`
+- Client acceptance: `0x8127e3342e3b5e69c70fec8ae20606c9e972a74936f70dc1097830750001eef6`
+
+The final contract state is `ACCEPTED`; `get_settlement()` records 10,000 provider
+basis points, 0.02 GEN to the provider, zero to the client, and `settled: true`.
+
 ## Reuse
 
 Another protocol can deploy one `AgentEscrow` per commitment, pass its own human- or agent-authored specification and rubric, and observe canonical views plus lifecycle records. No application-specific registry is required.

@@ -428,6 +428,8 @@ class AgentEscrow(gl.Contract):
             evidence_id = item["id"]
             kind = item["kind"]
             content = item["content"]
+            if kind == "TEXT" and item.get("content_hash") == 0:
+                item["content_hash"] = ""
             _user_assert(evidence_id > 0 and evidence_id not in ids, "evidence ids must be unique positive integers")
             ids.append(evidence_id)
             _user_assert(kind in json.loads(self.evidence_allowed_kinds_json), "evidence kind not allowed")
