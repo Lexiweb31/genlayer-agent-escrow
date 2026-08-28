@@ -130,6 +130,12 @@ A complete cooperative escrow lifecycle was exercised on Bradbury using contract
 The final contract state is `ACCEPTED`; `get_settlement()` records 10,000 provider
 basis points, 0.02 GEN to the provider, zero to the client, and `settled: true`.
 
+A separate disputed-flow exercise uncovered and fixed a GenVM storage-capture
+regression. The corrected deployment, confirmed lifecycle transactions, pending
+AI-jury transaction, and recovery details are recorded in
+[`docs/BRADBURY_DISPUTE_PROOF.md`](docs/BRADBURY_DISPUTE_PROOF.md). Pending
+consensus is explicitly not represented as a completed adjudication.
+
 ## Reuse
 
 Another protocol can deploy one `AgentEscrow` per commitment, pass its own human- or agent-authored specification and rubric, and observe canonical views plus lifecycle records. No application-specific registry is required.

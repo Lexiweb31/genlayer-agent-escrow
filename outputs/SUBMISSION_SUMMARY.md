@@ -15,7 +15,7 @@ AgentEscrow is a standalone GenLayer Intelligent Contract for native-GEN escrow 
 
 ## Verification result
 
-- 90 direct and artifact tests collected and passed.
+- 91 direct and artifact tests collected and passed.
 - GenVM lint passed all three checks.
 - GenVM contract validation passed: 16 methods (6 view, 10 write).
 - One localnet integration test collected successfully.
@@ -28,5 +28,9 @@ AgentEscrow is a standalone GenLayer Intelligent Contract for native-GEN escrow 
 - Provider delivery transaction: `0x797a999f8e0712cc0f71856b07b17dac1cc938b985604c5a4770883fcd1aecef`
 - Client acceptance transaction: `0x8127e3342e3b5e69c70fec8ae20606c9e972a74936f70dc1097830750001eef6`
 - Final state: `ACCEPTED`; settlement records 0.02 GEN and 10,000 provider basis points.
+
+The corrected disputed-flow deployment and its still-pending AI-jury
+transaction are documented in `docs/BRADBURY_DISPUTE_PROOF.md`; this package
+does not claim that pending adjudication as complete.
 
 Full localnet execution requires a current Studio/localnet image containing the contract's pinned runner and `gl.evm.contract_interface`. This compatibility constraint is documented without downgrading finalized payout behavior.

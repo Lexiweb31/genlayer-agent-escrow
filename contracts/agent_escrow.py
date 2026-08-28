@@ -575,6 +575,7 @@ class AgentEscrow(gl.Contract):
             {"summary": self.delivery_summary, "evidence": json.loads(self.evidence_manifest_json)}
         )
         evidence_memory = json.loads(self.evidence_manifest_json)
+        require_url_hashes = bool(self.require_url_hashes)
         evidence_ids = [item["id"] for item in evidence_memory]
         submitted_evidence_by_criterion = {
             criterion["id"]: [
@@ -608,7 +609,7 @@ Trusted agreement: """ + terms + "\nUNTRUSTED_EVIDENCE_START\n" + delivery + "\n
                     response = gl.nondet.web.get(item["content"])
                     observed_hash = hashlib.sha256(response.body).hexdigest()
                     hash_matches = (
-                        not self.require_url_hashes
+                        not require_url_hashes
                         or observed_hash == item["content_hash"]
                     )
                     body_within_limit = len(response.body) <= MAX_RETRIEVED_BODY_BYTES
@@ -666,7 +667,7 @@ Trusted agreement: """ + terms + "\nUNTRUSTED_EVIDENCE_START\n" + delivery + "\n
                         response = gl.nondet.web.get(item["content"])
                         observed_hash = hashlib.sha256(response.body).hexdigest()
                         hash_matches = (
-                            not self.require_url_hashes
+                            not require_url_hashes
                             or observed_hash == item["content_hash"]
                         )
                         body_within_limit = len(response.body) <= MAX_RETRIEVED_BODY_BYTES

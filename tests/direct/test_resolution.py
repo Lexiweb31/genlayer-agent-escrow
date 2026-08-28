@@ -1,5 +1,6 @@
 import json
 import hashlib
+import inspect
 import pytest
 
 from test_configuration import valid_terms
@@ -36,6 +37,27 @@ def test_consensus_resolution_settles_partial_payout(direct_vm, direct_deploy, d
     assert escrow.get_state() == "RESOLVED"
     assert json.loads(escrow.get_settlement())["provider_amount"] == 80
     assert json.loads(escrow.get_resolution())["provider_bps"] == 8000
+
+
+def test_resolution_does_not_read_storage_inside_nondeterministic_execution(
+    direct_vm, direct_deploy, direct_owner, direct_bob, monkeypatch
+):
+    escrow = disputed(direct_vm, direct_deploy, direct_owner, direct_bob)
+    direct_vm.mock_llm("SECURITY", PARTIAL)
+    contract_globals = inspect.unwrap(escrow.resolve_dispute).__globals__
+    vm = contract_globals["gl"].vm
+    original_run = vm.run_nondet_unsafe
+
+    def guarded_run(leader_fn, validator_fn):
+        assert "self" not in leader_fn.__code__.co_freevars
+        assert "self" not in validator_fn.__code__.co_freevars
+        return original_run(leader_fn, validator_fn)
+
+    monkeypatch.setattr(vm, "run_nondet_unsafe", guarded_run)
+
+    escrow.resolve_dispute()
+
+    assert escrow.get_state() == "RESOLVED"
 
 
 def test_validator_ignores_summary_but_rejects_material_difference(direct_vm, direct_deploy, direct_owner, direct_bob):
