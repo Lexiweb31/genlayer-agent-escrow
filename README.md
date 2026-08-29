@@ -120,6 +120,13 @@ The current contract uses the SDK runner that provides `gl.evm.contract_interfac
 
 ## Bradbury testnet proof
 
+The reviewer-corrected source is deployed on Bradbury at
+`0x32e2Fbf6474fA397589B3e51cdCfd0a3C113B444` (deployment transaction
+`0x78dc8e084ea77f9f8a1b8feb22255c6e7a10a39d1beeda367ba6351e5ddac5d6`).
+This version requires mapped trusted citations for every `PASS` or `PARTIAL`
+criterion and encloses retrieved URL bodies in explicit untrusted-data
+boundaries in both leader and validator prompts.
+
 A complete cooperative escrow lifecycle was exercised on Bradbury using contract
 `0x91F9ce165F7ab737D3920732679C24bBa9322EDd`:
 

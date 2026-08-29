@@ -4,6 +4,15 @@ This log records the live disputed-flow test on GenLayer's Bradbury testnet. It
 distinguishes confirmed on-chain results from transactions that are still
 pending; a pending transaction is not presented as a successful adjudication.
 
+## Reviewer-corrected deployment
+
+Following review, both positive-award citation enforcement and retrieved-body
+prompt boundaries were added to the submitted and deployed source.
+
+- Contract: `0x32e2Fbf6474fA397589B3e51cdCfd0a3C113B444`
+- Deployment: `0x78dc8e084ea77f9f8a1b8feb22255c6e7a10a39d1beeda367ba6351e5ddac5d6`
+- Deployment result: `ACCEPTED` / `AGREE` / `FINISHED_WITH_RETURN`
+
 ## Corrected deployment
 
 - Contract: `0x6841fbaD4950Bf50CE55076e5b69b0BFE65DE8A4`

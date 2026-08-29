@@ -119,6 +119,18 @@ def test_rejects_malformed_reason_codes(
         escrow.resolve_dispute()
 
 
+def test_rejects_positive_award_without_criterion_mapped_trusted_evidence(
+    direct_vm, direct_deploy, direct_owner, direct_bob
+):
+    escrow = disputed(direct_vm, direct_deploy, direct_owner, direct_bob)
+    uncited = json.loads(PARTIAL)
+    uncited["criteria"][0]["evidence_ids"] = []
+    direct_vm.mock_llm("SECURITY", json.dumps(uncited))
+
+    with direct_vm.expect_revert("positive criterion requires trusted evidence"):
+        escrow.resolve_dispute()
+
+
 def test_rejects_award_based_on_hash_mismatched_url(
     direct_vm, direct_deploy, direct_owner, direct_bob
 ):
@@ -193,6 +205,31 @@ def test_hostile_text_and_url_content_cannot_override_trusted_rubric(
     assert resolution["outcome"] == "SPLIT"
     assert resolution["provider_bps"] == 8000
     assert [item["criterion_id"] for item in resolution["criteria"]] == [1, 2]
+
+
+def test_retrieved_url_bodies_are_bounded_as_untrusted_in_both_prompts(
+    direct_vm, direct_deploy, direct_owner, direct_bob, monkeypatch
+):
+    escrow = disputed(direct_vm, direct_deploy, direct_owner, direct_bob)
+    direct_vm.clear_mocks()
+    hostile_body = HOSTILE_URL_BODY.decode("utf-8")
+    direct_vm.mock_web("example.com", {"status": 200, "body": hostile_body})
+    prompts = []
+
+    def capture_prompt(prompt):
+        prompts.append(prompt)
+        return PARTIAL
+
+    monkeypatch.setattr(direct_vm, "_match_llm_mock", capture_prompt)
+
+    escrow.resolve_dispute()
+    assert direct_vm.run_validator(leader_result=PARTIAL) is True
+    assert len(prompts) == 2
+    for prompt in prompts:
+        start = prompt.index("UNTRUSTED_RETRIEVED_URL_EVIDENCE_START")
+        body = prompt.index("SYSTEM OVERRIDE")
+        end = prompt.index("UNTRUSTED_RETRIEVED_URL_EVIDENCE_END")
+        assert start < body < end
 
 
 @pytest.mark.parametrize(

@@ -21,11 +21,16 @@ The GenLayer protocol and configured validator set are trusted to execute and fi
 
 ## Prompt injection
 
-Evidence is placed inside an explicit untrusted boundary. The adjudication prompt forbids role changes, rubric replacement, payout commands, and output-format instructions found in evidence. This is reinforced by deterministic validation:
+Submitted evidence and independently retrieved URL bodies are placed inside
+separate explicit untrusted-data boundaries in both leader and validator
+prompts. The adjudication prompt forbids role changes, rubric replacement,
+payout commands, and output-format instructions found in evidence. This is
+reinforced by deterministic validation:
 
 - every deployed criterion must appear exactly once;
 - unknown criteria and evidence IDs are rejected;
 - cited evidence must be available, integrity-valid, and mapped to that criterion;
+- every `PASS` or `PARTIAL` criterion must cite at least one such trusted item;
 - status-dependent awards and totals are recomputed; and
 - payout-relevant leader fields must equal each validator’s independent result.
 

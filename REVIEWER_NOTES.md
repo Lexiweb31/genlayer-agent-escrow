@@ -64,7 +64,12 @@ Ten writes:
 
 The direct suite covers configuration, lifecycle, settlement, dispute consensus, prompt injection, URL integrity, URL target restrictions, timeout liveness, terminal-state immutability, authorization, and payout conservation across boundary amounts and basis points.
 
-Expected verified collection: 91 direct/artifact tests and one integration test.
+Expected verified collection: 93 direct/artifact tests and one integration test.
+
+Positive criterion awards (`PASS` or `PARTIAL`) require at least one cited
+evidence item that is available, trusted, and mapped to that criterion.
+Submitted evidence and retrieved URL bodies are separately enclosed in explicit
+untrusted-data boundaries in both leader and validator prompts.
 
 ## Integration caveat
 

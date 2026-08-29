@@ -15,13 +15,18 @@ AgentEscrow is a standalone GenLayer Intelligent Contract for native-GEN escrow 
 
 ## Verification result
 
-- 91 direct and artifact tests collected and passed.
+- 93 direct and artifact tests collected and passed.
 - GenVM lint passed all three checks.
 - GenVM contract validation passed: 16 methods (6 view, 10 write).
 - One localnet integration test collected successfully.
 - All public JSON artifacts parsed successfully.
 
 ## Bradbury proof
+
+- Reviewer-corrected contract: `0x32e2Fbf6474fA397589B3e51cdCfd0a3C113B444`
+- Corrected deployment transaction: `0x78dc8e084ea77f9f8a1b8feb22255c6e7a10a39d1beeda367ba6351e5ddac5d6`
+- Corrections: positive criteria require mapped trusted citations; retrieved
+  URL bodies are explicitly untrusted in both consensus prompts.
 
 - Contract: `0x91F9ce165F7ab737D3920732679C24bBa9322EDd`
 - Deployment transaction: `0x0e6836c0f96238e522f0f64ca89b123a03ab2abe5bd57b0a4acb6b970b4a9148`
